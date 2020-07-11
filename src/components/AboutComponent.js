@@ -9,21 +9,30 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
-function RenderPartner({ partner }) {
+// week 3: task 2
+function RenderPartner(partner) {
   if (partner) {
     return (
       <React.Fragment>
         <Media object src={partner.image} alt={partner.name} width="150" />
-        <Media body className="ml-5 "></Media>
+        <Media body className="ml-5 ">
+          <Media heading>{partner.name}</Media>
+          {partner.description}
+        </Media>
       </React.Fragment>
     );
   }
-  return <h1>nothing</h1>;
+  return <div></div>;
 }
 
+// week 3: task 3
 function About(props) {
   const partners = props.partners.map((partner) => {
-    return <h5>{partner.name}</h5>;
+    return (
+      <Media tag="li" id={partner.id}>
+        {RenderPartner(partner)}
+      </Media>
+    );
   });
 
   return (

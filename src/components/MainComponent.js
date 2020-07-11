@@ -54,6 +54,7 @@ class Main extends Component {
       );
     };
 
+    // week 3: task 1
     const AboutUsPage = () => {
       return <AboutComponent partners={this.state.partners} />;
     };
