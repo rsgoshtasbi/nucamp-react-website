@@ -10,12 +10,12 @@ import {
 import { Link } from "react-router-dom";
 
 // week 3: task 2
-function RenderPartner(partner) {
+function RenderPartner({ partner }) {
   if (partner) {
     return (
       <React.Fragment>
         <Media object src={partner.image} alt={partner.name} width="150" />
-        <Media body className="ml-5 ">
+        <Media body className="ml-5 mb-4">
           <Media heading>{partner.name}</Media>
           {partner.description}
         </Media>
@@ -30,7 +30,7 @@ function About(props) {
   const partners = props.partners.map((partner) => {
     return (
       <Media tag="li" id={partner.id}>
-        {RenderPartner(partner)}
+        <RenderPartner partner={partner} />
       </Media>
     );
   });

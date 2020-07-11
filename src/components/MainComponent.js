@@ -12,6 +12,7 @@ import { COMMENTS } from "../shared/comments";
 import { PARTNERS } from "../shared/partners";
 import { PROMOTIONS } from "../shared/promotions";
 import AboutComponent from "./AboutComponent";
+import About from "./AboutComponent";
 
 class Main extends Component {
   constructor(props) {
