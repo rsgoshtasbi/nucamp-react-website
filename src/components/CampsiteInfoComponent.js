@@ -4,12 +4,67 @@ import {
   CardBody,
   CardText,
   CardImg,
-  CardImgOverlay,
-  CardTitle,
   Breadcrumb,
   BreadcrumbItem,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
 } from "reactstrap";
+import { LocalForm, Control } from "react-redux-form";
+
 import { Link } from "react-router-dom";
+
+class CommentForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showCommentModal: false,
+    };
+  }
+
+  handleCommentModal = () => {
+    this.setState({
+      showCommentModal: !this.state.showCommentModal,
+    });
+  };
+
+  render() {
+    return (
+      <React.Fragment>
+        <Button outline onClick={this.handleCommentModal}>
+          <i className="fa fa-pencil fa-lg" /> Submit Comment
+        </Button>
+        <Modal isOpen={this.state.showCommentModal} toggle={this.handleCommentModal}>
+          <ModalHeader toggle={this.handleCommentModal}>Submit Comment</ModalHeader>
+          <ModalBody>
+            <LocalForm
+              onUpdate={(form) => this.handleUpdate(form)}
+              onChange={(values) => this.handleChange(values)}
+              onSubmit={(values) => this.handleSubmit(values)}
+            >
+              <Control.select className="col-12" model="rating" id="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </Control.select>
+            </LocalForm>
+            <Button type="submit" value="submit" color="primary">
+              Submit
+            </Button>
+          </ModalBody>
+        </Modal>
+      </React.Fragment>
+    );
+  }
+}
 
 function RenderCampsite({ campsite }) {
   if (campsite) {
@@ -27,7 +82,7 @@ function RenderCampsite({ campsite }) {
   return <div />;
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, showCommentModal, handleCommentModal }) {
   if (comments) {
     return (
       <div className="col-md-5 m-1">
@@ -47,6 +102,10 @@ function RenderComments({ comments }) {
             </div>
           );
         })}
+        <CommentForm
+          showCommentModal={showCommentModal}
+          handleCommentModal={handleCommentModal}
+        />
       </div>
     );
   }
