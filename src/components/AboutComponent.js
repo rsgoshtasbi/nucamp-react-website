@@ -8,6 +8,7 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { baseUrl } from '../shared/baseUrl';
 
 // week 3: task 2
 function RenderPartner({ partner }) {
