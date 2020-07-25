@@ -14,10 +14,15 @@ import {
   FormGroup,
   Label,
   Input,
+  Row,
+  Col,
 } from "reactstrap";
-import { LocalForm, Control } from "react-redux-form";
+import { LocalForm, Control, Errors } from "react-redux-form";
 
 import { Link } from "react-router-dom";
+
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
 
 class CommentForm extends Component {
   constructor(props) {
@@ -31,8 +36,23 @@ class CommentForm extends Component {
   handleCommentModal = () => {
     this.setState({
       showCommentModal: !this.state.showCommentModal,
+      rating: "",
+      name: "",
+      comment: "",
     });
   };
+
+  handleChange = (event) => {
+    console.log(event);
+    // this.setState({
+    //   [event.target.name]: event.target.value,
+    // });
+  };
+
+  handleSubmit(values) {
+    console.log("Current state is: " + JSON.stringify(values));
+    alert("Current state is: " + JSON.stringify(values));
+  }
 
   render() {
     return (
@@ -40,25 +60,84 @@ class CommentForm extends Component {
         <Button outline onClick={this.handleCommentModal}>
           <i className="fa fa-pencil fa-lg" /> Submit Comment
         </Button>
-        <Modal isOpen={this.state.showCommentModal} toggle={this.handleCommentModal}>
-          <ModalHeader toggle={this.handleCommentModal}>Submit Comment</ModalHeader>
+        <Modal
+          isOpen={this.state.showCommentModal}
+          toggle={this.handleCommentModal}
+        >
+          <ModalHeader toggle={this.handleCommentModal}>
+            Submit Comment
+          </ModalHeader>
           <ModalBody>
-            <LocalForm
-              onUpdate={(form) => this.handleUpdate(form)}
-              onChange={(values) => this.handleChange(values)}
-              onSubmit={(values) => this.handleSubmit(values)}
-            >
-              <Control.select className="col-12" model="rating" id="rating">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </Control.select>
+            <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+              <Row className="form-group">
+                <Label htmlFor="rating" md={12}>
+                  Rating
+                </Label>
+                <Col md={12}>
+                  <Control.select
+                    model=".rating"
+                    name="rating"
+                    className="form-control"
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </Control.select>
+                </Col>
+              </Row>
+
+              <Row className="form-group">
+                <Label htmlFor="author" md={12}>
+                  Your Name
+                </Label>
+                <Col md={12}>
+                  <Control.text
+                    model=".author"
+                    id="author"
+                    name="author"
+                    placeholder="Your Name"
+                    className="form-control"
+                    validators={{
+                      minLength: minLength(2),
+                      maxLength: maxLength(15),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".author"
+                    show="touched"
+                    component="div"
+                    messages={{
+                      minLength: "Must be at least 2 characters",
+                      maxLength: "Must be 15 characters or less",
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Label htmlFor="text" md={12}>
+                  Comment
+                </Label>
+                <Col md={12}>
+                  <Control.textarea
+                    model=".text"
+                    id="text"
+                    name="text"
+                    rows="5"
+                    className="form-control"
+                  />
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Col>
+                  <Button type="submit" color="primary">
+                    submit
+                  </Button>
+                </Col>
+              </Row>
             </LocalForm>
-            <Button type="submit" value="submit" color="primary">
-              Submit
-            </Button>
           </ModalBody>
         </Modal>
       </React.Fragment>
